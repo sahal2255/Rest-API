@@ -10,9 +10,8 @@ const app=express()
 app.use(express.json())
 
 
-app.use('/',productRoute)
-app.use('/user',userRoute)
-
+app.use('/admin',productRoute)
+app.use('/',userRoute)
 
 mongoose.connect('mongodb://localhost:27017/ecommerce')
 .then(() => console.log('MongoDB connected'))

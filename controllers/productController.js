@@ -16,36 +16,56 @@ const createProduct=async (req,res)=>{
 }
 const getProduct=async (req,res)=>{
     const pro=await Products.find()
-    console.log(pro);
+    // console.log(pro);
     // res.send({message:'getting'})
     res.status(200).json(pro)
 }
 
 const updateProduct=async (req,res)=>{
-    const {productId}=req.query
+    const {productId,...updateFields}=req.query
     console.log(req.query);
     try{
-        const updatePro=await Products.findOne({productId})
-        console.log(updatePro);
-        res.status(200).json(updatePro)
+        const updatedProduct=await Products.findOneAndUpdate(
+            {productId},
+            updateFields,
+            { new: true}
+        );
+        console.log('working',updatedProduct);
+        if (!updatedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+          }
+      
+          console.log(updatedProduct);
+          res.status(200).json(updatedProduct)
     }catch(error){
+        console.error('Error updating product:', error);
         res.status(500).json({error:error.message})
     }
     
 }
-const deleteProduct=async (req,res)=>{
-    const {productId}=req.query
-    console.log(req.query);
-    try{
-        const product = await Products.findByIdAndUpdate({productId:productId})
+const deleteProduct = async (req, res) => {
+    const { productId } = req.query;
+    console.log('Request query:', req.query);
 
-    }catch(error){
-        res.status(500).json({error:error.message})
+    try {
+        const result = await Products.deleteOne({ productId });
+
+        if (result.deletedCount === 0) {
+            console.log('Product not found');
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        console.log('Product deleted:', result);
+        return res.status(200).json({ message: 'Product deleted successfully' });
+    } catch (error) {
+        console.log('Delete error:', error);
+        return res.status(500).json({ error: error.message });
     }
-}
+};
 
 module.exports ={
     createProduct,
     getProduct,
     updateProduct,
+    deleteProduct
 }

@@ -1,3 +1,4 @@
+const Products = require('../models/product');
 const User = require('../models/user');
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
@@ -40,7 +41,23 @@ const login=async (req,res)=>{
         res.status(500).json({message:'login error'})
     }
 }
+
+const showProduct = async (req, res) => {
+    try {
+      const products = await Products.find();
+      // console.log('user side', products);
+      res.status(200).json(products);
+    } catch (error) {
+      console.error('error products show:', error);
+      res.status(500).json({ message: 'error products' });
+    }
+  };
+
+//   const editProfile=async(req,res)=>{
+//     console.log(hello);
+//   }
 module.exports = {
     signUP,
-    login
+    login,
+    showProduct
 };
