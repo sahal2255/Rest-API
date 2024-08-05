@@ -1,5 +1,6 @@
-const { version } = require("mongoose");
 const swaggerJSDoc = require("swagger-jsdoc");
+const path = require('path');
+
 
 const options={
     definition:{
@@ -7,13 +8,13 @@ const options={
         info:{
             title:'Ecommerse sample Api',
             version:'1.0.0',
-            description:'E commerse api doc'
+            description:'Ecommerse api doc'
         },
         servers:[
             {url:'http://localhost:3001'}
         ]
     },
-    apis:['./routers/*.js']
+    apis:[path.join(__dirname, 'routers/*.js')]
 }
 
 const swaggerSpec=swaggerJSDoc(options)

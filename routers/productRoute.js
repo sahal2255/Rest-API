@@ -4,7 +4,7 @@ const productController= require('../controllers/productController')
 
 /**
  * @swagger
- * /:
+ * /product/:
  *   get:
  *     summary: Retrieve a list of products
  *     responses:
@@ -15,7 +15,7 @@ router.get('/',productController.getProduct)
 
 /**
  * @swagger
- * /create:
+ * /product/create:
  *   post:
  *     summary: Create a new product
  *     parameters:
@@ -57,7 +57,7 @@ router.post('/create',productController.createProduct)
 
 /**
  * @swagger
- * /updateproduct:
+ * /product/updateproduct:
  *   put:
  *     summary: Update a product
  *     parameters:
@@ -96,7 +96,7 @@ router.post('/create',productController.createProduct)
 router.put('/updateproduct',productController.updateProduct)
 /**
  * @swagger
- * /productdelete:
+ * /product/productdelete:
  *   delete:
  *     summary: Delete a product
  *     parameters:
