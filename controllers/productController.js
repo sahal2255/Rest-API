@@ -15,10 +15,16 @@ const createProduct=async (req,res)=>{
     }
 }
 const getProduct=async (req,res)=>{
-    const pro=await Products.find()
-    // console.log(pro);
-    // res.send({message:'getting'})
-    res.status(200).json(pro)
+    try{
+
+        const product=await Products.find()
+        res.status(200).json(product)
+    }catch(error){
+        console.log('error getting product',error);
+        res.status(500).json({ error: 'Internal server error' }); 
+        
+    }
+    
 }
 
 const updateProduct=async (req,res)=>{
@@ -49,12 +55,6 @@ const deleteProduct = async (req, res) => {
 
     try {
         const result = await Products.deleteOne({ productId });
-
-        if (result.deletedCount === 0) {
-            console.log('Product not found');
-            return res.status(404).json({ message: 'Product not found' });
-        }
-
         console.log('Product deleted:', result);
         return res.status(200).json({ message: 'Product deleted successfully' });
     } catch (error) {
@@ -63,7 +63,7 @@ const deleteProduct = async (req, res) => {
     }
 };
 
-module.exports ={
+module.exports = {
     createProduct,
     getProduct,
     updateProduct,
