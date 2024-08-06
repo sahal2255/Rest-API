@@ -1,8 +1,8 @@
 const Products=require('../models/product')
 
 const createProduct=async (req,res)=>{
-    const { name, description,productId, price, quantity } = req.query;
-    console.log(req.query);
+    const { name, description,productId, price, quantity } = req.body;
+    console.log(req.body);
     try{
         const product=new Products({name,description,productId,price,quantity})
         console.log(product);

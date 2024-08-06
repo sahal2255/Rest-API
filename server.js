@@ -13,8 +13,8 @@ app.use(express.json())
 app.use(cookieParser());  
 app.use('/api-docs',swaggerUI.serve,swaggerUI.setup(swaggerSpec))
 
-app.use('/product',productRoute)
-app.use('/user',userRoute)
+app.use('/',productRoute)
+app.use('/',userRoute)
 
 mongoose.connect('mongodb://localhost:27017/ecommerce')
 .then(() => console.log('MongoDB connected'))

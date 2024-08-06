@@ -17,32 +17,34 @@ const signUP = async (req, res) => {
     }
 };
 
-const login=async (req,res)=>{
-    console.log('start');
-    const { email }=req.query
-    console.log(req.query);
-    try{
-        console.log('one');
-        const user=await User.findOne({email:email})
-        console.log(user);
-        if(!user){
-            console.log('user not found');
-            res.status(404).json({error:'User Not Found'})
-        }
-        const token=jwt.sign(
-            {userId:user._id,email:user.email},
-            process.env.JWT_SECRET,
-            {expiresIn:'1h'}
-        )
-        console.log(token);
-        res.cookie('token', token, { httpOnly: true });
-        console.log(user);
-        res.status(200).json({token})
-    }catch(error){
-        console.log('login error');
-        res.status(500).json({message:'login error'})
-    }
+const login = async (req, res) => {
+  console.log('start');
+  const { email } = req.body;
+  console.log(req.body);
+  try {
+      console.log('one');
+      const user = await User.findOne({ email: email });
+      console.log(user);
+      if (!user) {
+          console.log('user not found');
+          return res.status(404).json({ error: 'User Not Found' });
+      }
+
+      const token = jwt.sign(
+          { userId: user._id, email: user.email },
+          process.env.JWT_SECRET,
+          { expiresIn: '1h' }
+      );
+      console.log(token);
+      res.cookie('token', token, { httpOnly: true });
+      console.log(user);
+      return res.status(200).json({ token });
+  } catch (error) {
+      console.log('login error');
+      return res.status(500).json({ message: 'login error' });
+  }
 }
+
 
 const showProduct = async (req, res) => {
     try {
@@ -102,7 +104,7 @@ const showProduct = async (req, res) => {
     try{
         const userId=req.user.userId
         console.log('userid',userId);
-        const {email,userName,number}=req.query
+        const {email,userName,number}=req.body
         const updatedUser=await User.findByIdAndUpdate(userId,
             {email,userName,number},
             {new:true}

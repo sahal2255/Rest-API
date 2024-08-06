@@ -4,60 +4,77 @@ const productController= require('../controllers/productController')
 
 /**
  * @swagger
- * /product/:
+ * /product:
  *   get:
  *     summary: Retrieve a list of products
  *     responses:
  *       200:
  *         description: A list of products
  */
-router.get('/',productController.getProduct)
+router.get('/product',productController.getProduct)
 
 /**
  * @swagger
- * /product/create:
+ * /create:
  *   post:
  *     summary: Create a new product
- *     parameters:
- *       - in: query
- *         name: name
- *         schema:
- *           type: string
- *         required: true
- *         description: The product name
- *       - in: query
- *         name: description
- *         schema:
- *           type: string
- *         required: true
- *         description: The product description
- *       - in: query
- *         name: productId
- *         schema:
- *           type: string
- *         required: true
- *         description: The product ID
- *       - in: query
- *         name: price
- *         schema:
- *           type: number
- *         required: true
- *         description: The product price
- *       - in: query
- *         name: quantity
- *         schema:
- *           type: number
- *         required: true
- *         description: The product quantity
+ *     description: Creates a new product with the provided details.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Name of the product
+ *                 example: ""
+ *               description:
+ *                 type: string
+ *                 description: Description of the product
+ *                 example: ""
+ *               productId:
+ *                 type: string
+ *                 description: product id
+ *                 example: ""
+ *               price:
+ *                 type: number
+ *                 format: float
+ *                 description: Price of the product
+ *                 example: 
+ *               quantity:
+ *                 type: number
+ *                 description: Quantity of the product 
+ *                 example: 
  *     responses:
  *       201:
  *         description: Product created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Product created successfully"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error"
  */
-router.post('/create',productController.createProduct)
+router.post('/create', productController.createProduct);
+
 
 /**
  * @swagger
- * /product/updateproduct:
+ * /updateproduct:
  *   put:
  *     summary: Update a product
  *     parameters:
@@ -94,9 +111,10 @@ router.post('/create',productController.createProduct)
  *         description: Product not found
  */
 router.put('/updateproduct',productController.updateProduct)
+
 /**
  * @swagger
- * /product/productdelete:
+ * /productdelete:
  *   delete:
  *     summary: Delete a product
  *     parameters:

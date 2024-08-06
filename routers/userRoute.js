@@ -5,63 +5,95 @@ const authMiddleware = require("../middleware/authMiddleware");
 
 /**
  * @swagger
- * /user/signup:
- *  post:
- *    summary: Signup a new user
- *    parameters:
- *      - in: query
- *        name: email
- *        schema:
- *          type: string
- *        required: true
- *        description: User's email address
- *      - in: query
- *        name: userName
- *        schema:
- *          type: string
- *        required: true
- *        description: User's username
- *      - in: query
- *        name: number
- *        schema:
- *          type: number
- *        required: true
- *        description: User's contact number
- *    responses:
- *      201:
- *        description: User successfully created
- *      500:
- *        description: Internal server error
+ * /signup:
+ *   post:
+ *     summary: Signup a new user
+ *     description: Creates a new user 
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: User's email address
+ *                 example: ""
+ *               userName:
+ *                 type: string
+ *                 description: User's username
+ *                 example: ""
+ *               number:
+ *                 type: number
+ *                 description: User's contact number
+ *                 example: 
+ *     responses:
+ *       201:
+ *         description: User successfully created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "User successfully created"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Internal server error"
  */
+
 
 router.post("/signup", userController.signUP);
 
 /**
  * @swagger
- * /user/login:
- *  post:
- *    summary: Login user
- *    parameters:
- *      - in: query
- *        name: email
- *        schema:
- *          type: string
- *        required: true
- *        description: User email address
- *    responses:
- *      200:
- *        description: User successfully logged in
- *      404:
- *        description: User not found
- *      500:
- *        description: Internal server error
+ * /login:
+ *   post:
+ *     summary: Login user
+ *     description: Authenticates a user and returns a JWT token.
+ *     
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: User's email address
+ *                 example: "user@example.com"
+ *     responses:
+ *       200:
+ *         description: User successfully logged in and token returned
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   description: JWT token for the authenticated user
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
  */
 
 router.post("/login", userController.login);
 
 /**
  * @swagger
- * /user/showproduct:
+ * /showproduct:
  *   get:
  *     summary: Retrieve a list of products
  *     responses:
@@ -72,7 +104,7 @@ router.get("/showproduct", userController.showProduct);
 
 /**
  * @swagger
- * /user/sortedprice:
+ * /sortedprice:
  *   get:
  *     summary: List sorted products
  *     parameters:
@@ -116,7 +148,7 @@ router.get("/showproduct", userController.showProduct);
 router.get("/sortedprice", authMiddleware, userController.sortingPrice);
 /**
  * @swagger
- * /user/profile:
+ * /profile:
  *   get:
  *     summary: Retrieve the user profile
  *     responses:
@@ -126,34 +158,71 @@ router.get("/sortedprice", authMiddleware, userController.sortingPrice);
 router.get("/profile", authMiddleware, userController.profile);
 /**
  * @swagger
- * /user/editprofile:
+ * /editprofile:
  *   put:
  *     summary: Update user profile
- *     parameters:
- *       - in: query
- *         name: email
- *         schema:
- *           type: string
- *         description: User email
- *       - in: query
- *         name: userName
- *         schema:
- *           type: string
- *         description: User name
- *       - in: query
- *         name: number
- *         schema:
- *           type: number
- *         description: User phone number
+ *     description: Updates the profile .
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: User's email address
+ *                 example: ""
+ *               userName:
+ *                 type: string
+ *                 description: User's username
+ *                 example: ""
+ *               number:
+ *                 type: number
+ *                 description: User's contact number
+ *                 example: 
  *     responses:
  *       200:
  *         description: Profile updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 email:
+ *                   type: string
+ *                 userName:
+ *                   type: string
+ *                 number:
+ *                   type: number
  *       404:
  *         description: User not found
  *       500:
- *         description: Server error
+ *         description: Internal server error
  */
 
+
 router.put("/editprofile", authMiddleware, userController.editProfile);
+/**
+ * @swagger
+ * /logout:
+ *   post:
+ *     summary: User logout
+ *     description: Clears the authentication token cookie and logs the user out.
+ *     
+ *     responses:
+ *       200:
+ *         description: Successfully logged out
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: logout successfully
+ *       500:
+ *         description: Internal server error
+ */
 router.post("/logout", authMiddleware, userController.logout);
 module.exports = router;

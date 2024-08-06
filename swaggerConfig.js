@@ -14,7 +14,7 @@ const options={
             {url:'http://localhost:3001'}
         ]
     },
-    apis:[path.join(__dirname, 'routers/*.js')]
+    apis:[ 'routers/*.js']
 }
 
 const swaggerSpec=swaggerJSDoc(options)
